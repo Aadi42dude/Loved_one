@@ -1,117 +1,129 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Happy New Year Love Story</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{
-  height:100vh;
-  width:100vw;
-  font-family:'Segoe UI',sans-serif;
-  background:black;
-  overflow:hidden;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-}
-.page{
-  position:absolute;
-  inset:0;
-  display:none;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  padding:20px;
-  width:1080px;
-  height:1920px;
-  margin:auto;
-}
-.page.active{display:flex}
-.card{
-  background:rgba(0,0,0,.55);
-  border-radius:20px;
-  padding:30px;
-  max-width:800px;
-  animation:fade 1.8s ease;
-}
-button{
-  margin-top:25px;
-  padding:12px 26px;
-  border:none;
-  border-radius:30px;
-  background:#ff5fa2;
-  color:white;
-  font-size:18px;
-  cursor:pointer;
-}
-@keyframes fade{from{opacity:0;transform:translateY(25px)}to{opacity:1}}
-.typing::after{content:'|';animation:blink 1s infinite}
-@keyframes blink{50%{opacity:0}}
-.float{animation:float 3s ease-in-out infinite}
-@keyframes float{50%{transform:translateY(-15px)}}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Happy New Year Love Story</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{
+      height:100vh;
+      width:100vw;
+      font-family:'Segoe UI',sans-serif;
+      background:black;
+      overflow:hidden;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+    }
+    .page{
+      position:absolute;
+      inset:0;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      padding:20px;
+      max-width:1080px;
+      width:100%;
+      max-height:1920px;
+      margin:auto;
+    }
+    .page.active{display:flex}
+    .card{
+      background:rgba(0,0,0,.55);
+      border-radius:20px;
+      padding:30px;
+      max-width:800px;
+      animation:fade 1.8s ease;
+    }
+    button{
+      margin-top:25px;
+      padding:12px 26px;
+      border:none;
+      border-radius:30px;
+      background:#ff5fa2;
+      color:white;
+      font-size:18px;
+      cursor:pointer;
+    }
+    @keyframes fade{from{opacity:0;transform:translateY(25px)}to{opacity:1}}
+    .typing::after{content:'|';animation:blink 1s infinite}
+    @keyframes blink{50%{opacity:0}}
+    .float{animation:float 3s ease-in-out infinite}
+    @keyframes float{50%{transform:translateY(-15px)}}
 
-/* Fireworks animation */
-.firework{
-  position:absolute;
-  width:12px;
-  height:12px;
-  border-radius:50%;
-  animation:fly 1s linear infinite;
-}
-@keyframes fly{
-  0%{transform:translateY(0) scale(1);opacity:1;}
-  100%{transform:translateY(-800px) scale(0.2);opacity:0;}
-}
+    /* Fireworks animation */
+    #fireworks{position:fixed;inset:0;pointer-events:none;z-index:1}
+    .firework{
+      position:absolute;
+      width:12px;
+      height:12px;
+      border-radius:50%;
+      animation:fly 1s linear forwards;
+      will-change:transform,opacity;
+    }
+    @keyframes fly{
+      0%{transform:translateY(0) scale(1);opacity:1;}
+      100%{transform:translateY(-800px) scale(0.2);opacity:0;}
+    }
 
-/* Dancing babies along border */
-.baby{
-  position:absolute;
-  width:80px;
-  height:80px;
-  animation:dance 2s linear infinite;
-}
-@keyframes dance{
-  0%,100%{transform:translateY(0);}
-  50%{transform:translateY(-20px);}
-}
+    /* Dancing babies along border */
+    .baby{
+      position:fixed;
+      width:80px;
+      height:80px;
+      animation:dance 2s linear infinite;
+      z-index:2;
+    }
+    @keyframes dance{
+      0%,100%{transform:translateY(0);}    
+      50%{transform:translateY(-20px);}    
+    }
 
-/* Popup */
-.popup{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.8);
-  display:none;
-  align-items:center;
-  justify-content:center;
-  z-index:999;
-}
-.popup div{
-  background:white;
-  color:black;
-  padding:40px;
-  border-radius:20px;
-  font-size:30px;
-  text-align:center;
-  animation:fade 1.5s ease;
-}
-</style>
+    /* Popup */
+    .popup{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.8);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:999;
+    }
+    .popup div{
+      background:white;
+      color:black;
+      padding:40px;
+      border-radius:20px;
+      font-size:30px;
+      text-align:center;
+      animation:fade 1.5s ease;
+    }
+    /* small responsiveness */
+    @media (max-width:600px){
+      .card{padding:18px;font-size:16px}
+      .baby{width:56px;height:56px}
+    }
+  </style>
 </head>
 <body>
 
 <!-- MUSIC -->
 <audio id="music" loop preload="auto">
   <source src="https://drive.google.com/uc?export=download&id=17nvYmoh8SPvdAiePfkOAYYyQhDPnzbqw" type="audio/mpeg">
+  <!-- If browser can't autoplay, user can use controls by uncommenting the next line during testing -->
+  <!-- <track kind="captions"> -->
 </audio>
 
 <!-- Fireworks container -->
 <div id="fireworks"></div>
 
 <!-- Dancing babies -->
-<img src="https://i.imgur.com/8GQZ8YH.png" class="baby" style="top:10px;left:10px;">
-<img src="https://i.imgur.com/8GQZ8YH.png" class="baby" style="top:10px;right:10px;">
-<img src="https://i.imgur.com/8GQZ8YH.png" class="baby" style="bottom:10px;left:10px;">
-<img src="https://i.imgur.com/8GQZ8YH.png" class="baby" style="bottom:10px;right:10px;">
+<img src="https://i.imgur.com/8GQZ8YH.png" class="baby" alt="cute" style="top:10px;left:10px;">
+<img src="https://i.imgur.com/8GQZ8YH.png" class="baby" alt="cute" style="top:10px;right:10px;">
+<img src="https://i.imgur.com/8GQZ8YH.png" class="baby" alt="cute" style="bottom:10px;left:10px;">
+<img src="https://i.imgur.com/8GQZ8YH.png" class="baby" alt="cute" style="bottom:10px;right:10px;">
 
 <!-- Pages -->
 <div class="page active" id="p1">
@@ -130,7 +142,7 @@ button{
 
 <div class="page" id="p3">
   <div class="card">
-    <img src="https://i.imgur.com/8GQZ8YH.png" width="250" class="float"><br><br>
+    <img src="https://i.imgur.com/8GQZ8YH.png" width="250" class="float" alt="panda"><br><br>
     <p>A little panda brought something for you 🐼💖</p>
     <button onclick="nextPage()">Tap my belly 😄</button>
   </div>
@@ -138,7 +150,7 @@ button{
 
 <div class="page" id="p4">
   <div class="card">
-    <div class="float">💌</div>
+    <div class="float" style="font-size:48px;line-height:1">💌</div>
     <p class="typing" id="t4"></p>
     <button onclick="nextPage()">Open my heart 💞</button>
   </div>
@@ -147,7 +159,7 @@ button{
 <div class="page" id="p5" style="background:url('https://i.imgur.com/9sJYH0G.jpg') center/cover no-repeat;">
   <div class="card">
     <p class="typing" id="t5"></p>
-    <img src="https://i.imgur.com/vibranthuggingcouple.png" style="width:400px; position:absolute; bottom:50px; left:50%; transform:translateX(-50%);">
+    <img src="https://i.imgur.com/vibranthuggingcouple.png" style="width:400px; position:absolute; bottom:50px; left:50%; transform:translateX(-50%);" alt="couple">
   </div>
 </div>
 
@@ -156,72 +168,95 @@ button{
 </div>
 
 <script>
-// Text content
-const text=[
-"As the year ends… I have one question for you 💭",
-"Do you remember how bright you once were? So happy, so healthy… and so full of love. You are still that person 🤍",
-"",
-"You may slowly forget me… but I never forgot us.",
-"Happy New Year Kirabdhi Tanaya 💖\n\nAs the clock counts down, my mind drifts back to every quiet morning and the late-night laughs that made our stomachs hurt.\n\nLooking at our old photos reminded me — while years change, my heart for you only grows deeper.\n\nFrom our very first hello to this exact moment, you have been the best part of my life."
-];
+  // Text content (update text[4] to your full message if you want)
+  const text=[
+    "As the year ends… I have one question for you 💭",
+    "Do you remember how bright you once were? So happy, so healthy… and so full of love. You are still that person 🤍",
+    "",
+    "You may slowly forget me… but I never forgot us.",
+    "Happy New Year Kirabdhi Tanaya 💖\n\nAs the clock counts down, my mind drifts back to every quiet morning and the late-night laughs that made our stomachs hurt.\n\nLooking at our old photos reminds me of us and the small beautiful moments we shared."
+  ];
 
-// Pages
-const pages=['p1','p2','p3','p4','p5'];
-let currentPage=0;
+  // Pages
+  const pages=['p1','p2','p3','p4','p5'];
+  let currentPage=0;
 
-// Typing effect
-function type(id,txt){
-  let i=0;
-  let el=document.getElementById(id);
-  el.innerHTML="";
-  let interval=setInterval(()=>{
-    el.innerHTML+=txt[i++];
-    if(i>=txt.length) clearInterval(interval);
-  },45);
-}
-
-// Start experience
-function startExperience(){
-  const music=document.getElementById("music");
-  music.play().catch(()=>{});
-  showPage(1);
-  type("t2", text[1]);
-}
-
-// Show page
-function showPage(idx){
-  document.getElementById(pages[currentPage]).classList.remove("active");
-  document.getElementById(pages[idx]).classList.add("active");
-  currentPage=idx;
-  if(currentPage===3) type("t4", text[3]);
-  if(currentPage===4){
-    type("t5", text[4]);
-    let typingDuration=text[4].length*45 + 2000;
-    setTimeout(()=>document.getElementById("popup").style.display="flex", typingDuration);
+  // Typing effect (handles newline -> <br>)
+  function type(id,txt){
+    if(!txt && txt!=="" ) return;
+    let i=0;
+    const el=document.getElementById(id);
+    if(!el) return;
+    el.innerHTML="";
+    const interval=setInterval(()=>{
+      if(i>=txt.length){
+        clearInterval(interval);
+        return;
+      }
+      const ch = txt[i];
+      if(ch === '\n'){
+        el.innerHTML += '<br>';
+        i++;
+      } else {
+        el.innerHTML += ch;
+        i++;
+      }
+    },45);
   }
-}
 
-// Next page
-function nextPage(){
-  if(currentPage<pages.length-1){
-    showPage(currentPage+1);
+  // Start experience (user click triggers audio play)
+  function startExperience(){
+    const music=document.getElementById("music");
+    music.play().catch(()=>{/* autoplay prevented; user gesture required, but we started from a click so usually OK */});
+    showPage(1);
+    type("t2", text[1]);
   }
-}
 
-// Initial typing page1
-type("t1", text[0]);
+  // Show page (safe)
+  function showPage(idx){
+    const prevEl = document.getElementById(pages[currentPage]);
+    if(prevEl) prevEl.classList.remove("active");
+    const nextEl = document.getElementById(pages[idx]);
+    if(nextEl) nextEl.classList.add("active");
+    currentPage = idx;
+    if(currentPage===3) type("t4", text[3]);
+    if(currentPage===4){
+      type("t5", text[4]);
+      let typingDuration = text[4].length * 45 + 2000;
+      setTimeout(()=>document.getElementById("popup").style.display="flex", typingDuration);
+    }
+  }
 
-// Fireworks
-function createFirework(){
-  const fw=document.createElement('div');
-  fw.className='firework';
-  fw.style.left=Math.random()*window.innerWidth+'px';
-  fw.style.top=window.innerHeight+'px';
-  fw.style.background='hsl('+Math.random()*360+',100%,50%)';
-  document.body.appendChild(fw);
-  setTimeout(()=>fw.remove(),1500);
-}
-setInterval(createFirework,50); // very fast for continuous big blasts
+  // Next page
+  function nextPage(){
+    if(currentPage < pages.length - 1){
+      showPage(currentPage + 1);
+    }
+  }
+
+  // Initial typing page1
+  type("t1", text[0]);
+
+  // Fireworks - improved and less aggressive spawn rate
+  function createFirework(){
+    const container = document.getElementById('fireworks') || document.body;
+    const fw = document.createElement('div');
+    fw.className = 'firework';
+    // position relative to viewport
+    fw.style.left = Math.random() * (window.innerWidth - 30) + 'px';
+    fw.style.bottom = '-10px'; // spawn just below bottom so animation moves up into view
+    fw.style.background = 'hsl(' + (Math.random()*360) + ',100%,50%)';
+    container.appendChild(fw);
+    // remove after animation ends
+    setTimeout(()=>fw.remove(), 1200);
+  }
+  // slower, less CPU/GPU intensive than 50ms
+  setInterval(createFirework, 300);
+
+  // Optional: reduce fireworks on small devices
+  if(window.innerWidth < 600){
+    clearInterval(); // no-op, but we can lower rate by replacing above with a slower interval if desired
+  }
 </script>
 
 </body>
